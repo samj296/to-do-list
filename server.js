@@ -1,5 +1,5 @@
 const express = require("express");
-const {pushingToDo, todo, deleteNote} = require("./logicEngine");
+const {pushingToDo, todo, deleteNote, updateStatus} = require("./logicEngine");
 
 const app = express();
 app.use(express.json());
@@ -21,7 +21,7 @@ app.get("/todo",(req, res) =>{
     res.json(todo);
 });
 
-app.post("/todo/delete/:id",(req, res) =>{
+app.delete("/todo/:id",(req, res) =>{
     try{
         const id = Number(req.params.id);
         res.json(deleteNote(id));
@@ -29,4 +29,14 @@ app.post("/todo/delete/:id",(req, res) =>{
         res.status(404).json({ error: err.message})
     }
     
+});
+
+app.patch("/todo/:id",(req, res) =>{
+    try{
+        const id = Number(req.params.id);
+        const {status} = req.body;
+        res.json(updateStatus(id, status));
+    } catch (err){
+        res.status(404).json({error: err.message})
+    }
 });

@@ -43,4 +43,21 @@ function deleteNote(id){
     
 }
 
-module.exports = {pushingToDo, todo, deleteNote}
+function updateStatus(id, status){
+    const itemIndex = todo.findIndex(i => i.id === id);
+    if(itemIndex === -1){
+        throw new Error(`Todo with id ${id} not found`);
+    }
+
+    const validStatus = ["Pending", "Completed"];
+    if (!validStatus.includes(status)){
+        throw new Error(`Only the following statuses are allowed ${validStatus.join(", ")}`);
+    }
+    let item = todo[itemIndex]
+
+    item.status = status
+
+    return item
+}
+
+module.exports = {pushingToDo, todo, deleteNote, updateStatus}
